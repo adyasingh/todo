@@ -1,7 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
+
 import TextField from '@material-ui/core/TextField';
 import { useState, useEffect } from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -24,9 +22,9 @@ import { Button, IconButton } from '@material-ui/core';
 
 
 export default function List() {
-    const [list, setList] = React.useState([]);
-    const [open, setOpen] = React.useState(false);
-    const [newTask, setNewTask] = React.useState('');
+    const [list, setList] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [newTask, setNewTask] = useState('');
 
     useEffect(() => {
 
@@ -50,12 +48,12 @@ export default function List() {
 
     //render table with tasks
     const getTable = () => {
-        console.log(list)
+        // console.log(list)
         return (
             <Table >
                 <TableHead>
                     <TableRow>
-                    {/* <TableCell style={{ color: "white" }} >id</TableCell> */}
+                        {/* <TableCell style={{ color: "white" }} >id</TableCell> */}
                         <TableCell style={{ color: "white" }} >Completed</TableCell>
                         <TableCell style={{ color: "white" }}>Task</TableCell>
                         <TableCell style={{ color: "white" }}>Delete</TableCell>
@@ -64,15 +62,20 @@ export default function List() {
                 <TableBody>
                     {list.map((row) => (
                         <TableRow key={row.id}>
-                             {/* <TableCell style={{ color: "white" }}>{row.id}</TableCell> */}
+                            {/* <TableCell style={{ color: "white" }}>{row.id}</TableCell> */}
 
-                            <TableCell>{row.completed}
-                                <FormControlLabel control={<Checkbox style={{ color: "white" }} name="checkedC" />} />
+                            <TableCell>
+                                <div>
+                                    <FormControlLabel control={
+                                        <Checkbox checked={row.completed} onChange={(e) => { handleCheckbox(e, row.id, row.item) }} style={{ color: "white" }} name="checkedC" />}
+                                    />
+                                </div>
+
                             </TableCell>
 
                             <TableCell style={{ color: "white" }}>{row.item}</TableCell>
                             <TableCell >
-                                <IconButton style={{ color: "white" }}  onClick={() => handleDelete(row.id)}>
+                                <IconButton style={{ color: "white" }} onClick={() => handleDelete(row.id)}>
                                     <DeleteIcon />
                                 </IconButton>
 
@@ -88,19 +91,32 @@ export default function List() {
 
     function handleDelete(id) {
         // console.log("http://127.0.0.1:8000/api/todos/" + id)
-        fetch("http://127.0.0.1:8000/api/todos/" + id+'/', {
-          method: 'delete',
-        //   headers: { 'Content-Type': 'application/json' },
+        fetch("http://127.0.0.1:8000/api/todos/" + id + '/', {
+            method: 'delete',
         })
-        
-        // .then(response => response.json())
-        .then(response => {
-            console.log(response)
-            getList()
-          
-        });
-
+            .then(response => {
+                // console.log(response)
+                getList()
+            });
     }
+
+    const handleCheckbox = (e, id, item) => {
+        // console.log(e.target.checked, id)
+        // console.log("http://127.0.0.1:8000/api/todos/" + id)
+        const requestOptions2 = {
+            method: 'PUT',
+            crossDomain: true,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id, item: item, completed: e.target.checked })
+        };
+        fetch('http://127.0.0.1:8000/api/todos/' + id + '/', requestOptions2)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+                getList()
+            });
+
+    };
 
 
     //open dialog box
@@ -117,7 +133,7 @@ export default function List() {
     const handleTaskChange = (e) => {
         setNewTask(e.target.value)
     };
-    
+
     //add new task to the database 
     const handleAdd = () => {
         handleClose()
@@ -134,10 +150,10 @@ export default function List() {
                 getList()
             });
 
-        
+
     };
 
- 
+
     return (
         <div style={{ backgroundColor: "#282c34", color: "white" }}>
 

@@ -1,4 +1,6 @@
 # TODO List 
+## Made using Django and React
+
 A simple todolist which keep track of tasks you need to complete
 
 ![Screenshot of list](/List.png?raw=true "Screenshot")

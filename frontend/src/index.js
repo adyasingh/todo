@@ -15,7 +15,7 @@ ReactDOM.render(
   <Router history={hist}>
     <Switch>
      
-      <Route path="/login" component={Login} />
+      {/* <Route path="/login" component={Login} /> */}
       <Route path="/list" component={List} />
       <Route path="/" component={App} />
     

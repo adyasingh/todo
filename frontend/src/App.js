@@ -12,11 +12,14 @@ export default function App() {
         <p>
          Welcome to Todo App
         </p>
-        <Link to = "/login">
+        {/* <Link to = "/login">
           <Button style={{color:"white"}}>LOGIN</Button>
         </Link>
         <Link to = "/signup">
           <Button style={{color:"white"}}>SIGNUP</Button>
+        </Link> */}
+        <Link to = "/list">
+          <Button style={{color:"white"}}>Go to my list ></Button>
         </Link>
       </header>
     </div>
